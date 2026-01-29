@@ -35,14 +35,18 @@ public class eventosFiestaQuito {
     }
     public static double[] calcularRecaudacion(String datos[][]) {
         double recau[] = new double[datos.length];
-        for (int i = 0; i < datos.length; i++) {
+        for (int i = 0; i < datos.length && datos[i][0] != null; i++) {
             int asistentes = Integer.parseInt(datos[i][2]);
             double costo = Double.parseDouble(datos[i][3]);
             recau[i] = asistentes * costo;
         }
         return recau;
         }
-    public static void persistirArchivo(String nombreArchivoOut, String datos[][], double recau[], int nroEventos) {
+    public static void persistirArchivo(String nombreArchivoOut, String datos[][], double recau[]) {
+        int nroEventos = 0;
+        while (nroEventos < datos.length && datos[nroEventos][0] != null) {
+            nroEventos++;
+        }
         try {
             Formatter fout = new Formatter(new File(nombreArchivoOut));
             fout.format("%s\n","EVENTO,PARROQUIA,ASISTENTES,COSTO,RECAUDACION");
@@ -50,11 +54,11 @@ public class eventosFiestaQuito {
                 fout.format("%s,%s,%s,%s,%.2f\n",
                         datos[i][0], datos[i][1], datos[i][2], datos[i][3], recau[i]);
             }
-        double racauMax = EventoMayorRecaudacion(recau[]);
+        int recauMax = EventoMayorRecaudacion(recau, nroEventos);
         String parroquia = parroquiaMasEventos(datos, nroEventos);
         double prom = promedioAsistentes(datos,nroEventos);
         fout.format("\nRESUMEN\n");
-        fout.format("Evento con mayor recaudacion,%.2f\n", datos[recauMax][0]);
+        fout.format("Evento con mayor recaudacion,%s\n", datos[recauMax][0]);
         fout.format("Parroquia con mas eventos,%s\n", parroquia);
         fout.format("Promedio general de asistentes,%.2f\n", prom);
         fout.close();
@@ -64,28 +68,33 @@ public class eventosFiestaQuito {
     }
     public static int EventoMayorRecaudacion(double recau[], int nroEventos) {
         int mayor = 0;
-        for (int i = 1; i < ; i++)
-            if (rec[i] > rec[idx]) idx = i;
-        return idx;
+        for (int i = 1; i < nroEventos; i++)
+            if (recau[i] > recau[mayor]) 
+                mayor = i;
+        return mayor;
     }
-    public static String parroquiaMasEventos(String datos[][], int n) {
-        String mejor = datos[0][1];
+    public static String parroquiaMasEventos(String datos[][], int nroEventos) {
+        String parroquiaMas = datos[0][1];
         int max = 0;
-        for (int i = 0; i < n; i++) {
-            int cont = 0;
-            for (int j = 0; j < n; j++)
-                if (datos[i][1].equals(datos[j][1])) cont++;
-                    if (cont > max) {
-                        max = cont;
-                        mejor = datos[i][1];
-                    }
-        }
-    return mejor;
+        for (int i = 0; i < nroEventos; i++) {
+            int vecesRepite = 0;
+            if (datos[i][1] == null) continue; 
+            for (int j = 0; j < nroEventos; j++){
+                if (datos[i][1].equalsIgnoreCase(datos[j][1])) {
+                    vecesRepite++;
+                }
+            }
+            if (vecesRepite > max) {
+                max = vecesRepite;
+                parroquiaMas = datos[i][1];
+            }
+        } 
+        return parroquiaMas;
     }
-    public static double promedioAsistentes(String datos[][], int n) {
+    public static double promedioAsistentes(String datos[][], int nroEventos) {
         int suma = 0;
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < nroEventos; i++)
             suma += Integer.parseInt(datos[i][2]);
-    return (double) suma / n;
+        return (double) suma / nroEventos;
     }
 }
