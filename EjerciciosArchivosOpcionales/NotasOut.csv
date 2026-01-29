@@ -1,0 +1,21 @@
+NOMRES;NOTAS1;NOTAS2;PROMEDIO;SUPLE;ESTADO
+Est 1;9;2;5.50;0.84;ReProbado;
+Est 2;8;5;6.50;0.00;Aprobado;
+Est 3;2;3;2.50;2.86;ReProbado;
+Est 4;3;5;4.00;7.31;Aprobado;
+Est 5;6;4;5.00;3.58;ReProbado;
+Est 6;10;8;9.00;0.00;Aprobado;
+Est 7;6;10;8.00;0.00;Aprobado;
+Est 8;5;3;4.00;1.53;ReProbado;
+Est 9;8;7;7.50;0.00;Aprobado;
+
+Estudiantes Aprobados = 5
+Estudiantes Reprobados = 4
+
+ESTUDIANTES CON PROMEDIOS DEBAJO DE LA MEDIA
+Promedio general del curso = 5.20
+Nombres	Promedio
+Est 3		2.50
+Est 4		4.00
+Est 5		5.00
+Est 8		4.00
